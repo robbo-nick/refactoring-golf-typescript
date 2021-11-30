@@ -18,10 +18,10 @@ export class Takehomecalculator {
         this.percent = percent;
     }
 
-    netAmount(value: Money, ...rest : Money[]): Money {
+    netAmount(first: Money, ...rest : Money[]): Money {
 
         const monies: Array<Money> = Array.from(rest);
-        let total: Money = value
+        let total: Money = first
 
         for (let next of monies) {
             if (next.currency !== total.currency) {
@@ -34,12 +34,12 @@ export class Takehomecalculator {
         }
 
         const amount:number = total.value * (this.percent / 100.0 );
-        const tax: Money = new Money(Math.trunc(amount), value.currency);
+        const tax: Money = new Money(Math.trunc(amount), first.currency);
 
         if (total.currency !== tax.currency) {
             throw new Incalculable()
         }
-        return new Money(total.value - tax.value, value.currency)
+        return new Money(total.value - tax.value, first.currency)
     }
 
 }
